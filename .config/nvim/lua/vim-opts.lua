@@ -4,13 +4,13 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-vim.cmd("set expandtab")
-vim.cmd("set tabstop=2")
-vim.cmd("set softtabstop=2")
-vim.cmd("set shiftwidth=2")
-
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = false
+
+-- [[ Setting options ]]
+-- See `:help vim.opt`
+-- NOTE: You can change these options as you wish!
+--  For more options, you can see `:help option-list`
 
 -- Make line numbers default
 vim.opt.relativenumber = true
@@ -52,6 +52,7 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
@@ -64,7 +65,9 @@ vim.opt.scrolloff = 10
 
 vim.opt.colorcolumn = "80"
 
+-- [[ Basic Keymaps ]]
+--  See `:help vim.keymap.set()`
+
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
-
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
