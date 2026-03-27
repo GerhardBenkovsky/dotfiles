@@ -22,7 +22,7 @@ case "$OS" in
 esac
 info "Platform: $PLATFORM"
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 command_exists() { command -v "$1" &>/dev/null; }
@@ -71,7 +71,8 @@ install_linux_packages() {
   info "Updating apt package list..."
   sudo apt-get update -qq
 
-  local pkgs=(
+  local pkgs
+  pkgs=(
     git
     curl
     wget
@@ -80,9 +81,6 @@ install_linux_packages() {
     stow
     tmux
     zsh
-    # neovim: installed separately for latest version
-    # go: installed separately
-    # docker: installed separately
   )
 
   for pkg in "${pkgs[@]}"; do
