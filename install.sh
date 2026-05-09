@@ -98,17 +98,30 @@ install_neovim_linux() {
     success "Neovim already installed ($(nvim --version | head -1))"
     return
   fi
-  info "Installing Neovim (latest stable appimage)..."
-  local tmp
-  tmp=$(mktemp -d)
-  curl -Lo "$tmp/nvim.appimage" \
-    "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage"
-  chmod +x "$tmp/nvim.appimage"
-  "$tmp/nvim.appimage" --appimage-extract --target "$tmp/nvim-squash" &>/dev/null
-  sudo mkdir -p /opt/nvim
-  sudo cp -r "$tmp/nvim-squash/"* /opt/nvim/
-  sudo ln -sf /opt/nvim/usr/bin/nvim /usr/local/bin/nvim
-  rm -rf "$tmp"
+  local arch
+  arch=$(uname -m)
+  if [[ "$arch" == "x86_64" ]]; then
+    info "Installing Neovim (latest stable tarball, x86_64)..."
+    local tmp
+    tmp=$(mktemp -d)
+    curl -Lo "$tmp/nvim.tar.gz" \
+      "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
+    sudo tar -C /opt -xzf "$tmp/nvim.tar.gz"
+    sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
+    rm -rf "$tmp"
+  elif [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
+    info "Installing Neovim (latest stable tarball, arm64)..."
+    local tmp
+    tmp=$(mktemp -d)
+    curl -Lo "$tmp/nvim.tar.gz" \
+      "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz"
+    sudo tar -C /opt -xzf "$tmp/nvim.tar.gz"
+    sudo ln -sf /opt/nvim-linux-arm64/bin/nvim /usr/local/bin/nvim
+    rm -rf "$tmp"
+  else
+    warn "Unsupported architecture ($arch) for Neovim prebuilt — install manually"
+    return
+  fi
   success "Neovim installed"
 }
 
@@ -118,9 +131,16 @@ install_go_linux() {
     return
   fi
   info "Installing Go (latest stable)..."
-  local go_version
+  local go_version arch goarch
   go_version=$(curl -fsSL "https://go.dev/VERSION?m=text" | head -1)
-  local archive="${go_version}.linux-amd64.tar.gz"
+  arch=$(uname -m)
+  case "$arch" in
+    x86_64)  goarch="amd64" ;;
+    aarch64|arm64) goarch="arm64" ;;
+    armv7l|armv6l) goarch="armv6l" ;;
+    *) warn "Unsupported architecture ($arch) for Go"; return ;;
+  esac
+  local archive="${go_version}.linux-${goarch}.tar.gz"
   curl -Lo /tmp/"$archive" "https://dl.google.com/go/$archive"
   sudo rm -rf /usr/local/go
   sudo tar -C /usr/local -xzf /tmp/"$archive"
