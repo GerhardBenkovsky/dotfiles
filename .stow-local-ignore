@@ -1,0 +1,22 @@
+# Stow's default ignore list is replaced (not extended) when this file exists,
+# so we re-include the defaults along with our own entries.
+# See: https://www.gnu.org/software/stow/manual/html_node/Types-Of-Ignore-Lists.html
+
+# --- Stow defaults (mirrored) -------------------------------------------------
+\.git
+\.gitignore
+\.gitmodules
+\.hg
+\.svn
+CVS
+.+~
+\#.*\#
+^/README.*
+^/LICENSE.*
+^/COPYING
+
+# --- Repo-specific ------------------------------------------------------------
+^/Brewfile
+^/install\.sh
+^/goals\.md
+^/home_row_mods.*\.json
