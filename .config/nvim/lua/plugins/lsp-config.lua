@@ -1,16 +1,14 @@
 return {
 	{
-		"williamboman/mason.nvim",
-		lazy = false,
-		config = function()
-			require("mason").setup()
-		end,
-	},
-	{
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 		lazy = false,
 		opts = {
-			auto_install = true,
+			ensure_installed = { "lua_ls", "ts_ls" },
+			automatic_enable = { "lua_ls", "ts_ls" },
+		},
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = {} },
+			"neovim/nvim-lspconfig",
 		},
 	},
 	{
@@ -18,6 +16,7 @@ return {
 		"neovim/nvim-lspconfig",
 		lazy = false,
 		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
 			-- Useful status updates for LSP.
 			{ "j-hui/fidget.nvim", opts = {} },
 		},
@@ -25,8 +24,7 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			local lspconfig = require("lspconfig")
-			lspconfig.lua_ls.setup({
+			vim.lsp.config("lua_ls", {
 				capabilities = capabilities,
 				settings = {
 					Lua = {
@@ -37,7 +35,7 @@ return {
 				},
 			})
 
-			lspconfig.ts_ls.setup({
+			vim.lsp.config("ts_ls", {
 				capabilities = capabilities,
 			})
 
