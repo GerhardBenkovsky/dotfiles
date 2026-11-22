@@ -8,6 +8,8 @@ brew "docker-compose"
 brew "go"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Parser generator required by nvim-treesitter
+brew "tree-sitter-cli"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
 # Terminal multiplexer
