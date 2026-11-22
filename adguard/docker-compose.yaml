@@ -1,0 +1,16 @@
+services:
+  adguardhome:
+    container_name: adguardhome
+    image: adguard/adguardhome
+    volumes:
+      - /home/gary/data/adguard/work:/opt/adguardhome/work
+      - /home/gary/data/adguard/conf:/opt/adguardhome/conf
+      - ./certs:/opt/adguardhome/certs:ro
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8053:80/tcp"
+      - "8443:443/tcp"
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Vienna

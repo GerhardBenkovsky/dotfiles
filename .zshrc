@@ -64,3 +64,15 @@ export PATH="$HOME/.local/bin:$PATH"
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
+
+# bun completions
+[ -s "/Users/I554867/.bun/_bun" ] && source "/Users/I554867/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+. '/Users/I554867/.local/bin/env'
+export CODEX_HOME=/Users/I554867/.codex
+
+# opencode
+export PATH=/Users/I554867/.opencode/bin:$PATH
